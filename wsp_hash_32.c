@@ -67,36 +67,36 @@ uint32_t wsp_hash_32(unsigned long input_count, const uint8_t *input) {
   _input_count += input_count;
 
   if (i != input_count) {
-    state += _state + ((a << 8) | (a >> 24));
+    state += ((a << 8) | (a >> 24)) + _state;
     input_count -= i;
 
     if (input_count >= 4) {
-      a += state + _wsp_hash_read_32(input, i) + 1111111111;
+      a += _wsp_hash_read_32(input, i) + state + 1111111111;
 
       if (input_count != 4) {
         _state += a + b;
-        state += _state + ((b << 10) | (b >> 22));
+        state += ((b << 10) | (b >> 22)) + _state;
 
         if (input_count == 7) {
-          b += state + (input[i + 4] | (input[i + 5] << 8)
-            | (input[i + 6] << 16)) + 1111111;
+          b += (input[i + 4] | (input[i + 5] << 8) | (input[i + 6] << 16))
+            + state + 1111111;
         } else {
           if (input_count == 6) {
-            b += state + (input[i + 4] | (input[i + 5] << 8)) + 111111;
+            b += (input[i + 4] | (input[i + 5] << 8)) + state + 111111;
           } else {
-            b += state + input[i + 4] + 11111;
+            b += input[i + 4] + state + 11111;
           }
         }
       }
     } else {
       if (input_count == 3) {
-        a += state + (input[i] | (input[i + 1] << 8)
-          | (input[i + 2] << 16)) + 111;
+        a += (input[i] | (input[i + 1] << 8) | (input[i + 2] << 16)) + state
+          + 111;
       } else {
         if (input_count == 2) {
-          a += state + (input[i] | (input[i + 1] << 8)) + 11;
+          a += (input[i] | (input[i + 1] << 8)) + state + 11;
         } else {
-          a += state + input[i] + 1;
+          a += input[i] + state + 1;
         }
       }
     }
@@ -221,36 +221,36 @@ void wsp_hash_32_transform(unsigned long i, unsigned long input_count,
   s->_input_count += input_count;
 
   if (i != input_count) {
-    s->state += s->_state + ((s->a << 8) | (s->a >> 24));
+    s->state += ((s->a << 8) | (s->a >> 24)) + s->_state;
     input_count -= i;
 
     if (input_count >= 4) {
-      s->a += s->state + _wsp_hash_read_32(input, i) + 1111111111;
+      s->a += _wsp_hash_read_32(input, i) + s->state + 1111111111;
 
       if (input_count != 4) {
         s->_state += s->a + s->b;
-        s->state += s->_state + ((s->b << 10) | (s->b >> 22));
+        s->state += ((s->b << 10) | (s->b >> 22)) + s->_state;
 
         if (input_count == 7) {
-          s->b += s->state + (input[i + 4] | (input[i + 5] << 8)
-            | (input[i + 6] << 16)) + 1111111;
+          s->b += (input[i + 4] | (input[i + 5] << 8) | (input[i + 6] << 16))
+            + s->state + 1111111;
         } else {
           if (input_count == 6) {
-            s->b += s->state + (input[i + 4] | (input[i + 5] << 8)) + 111111;
+            s->b += (input[i + 4] | (input[i + 5] << 8)) + s->state + 111111;
           } else {
-            s->b += s->state + input[i + 4] + 11111;
+            s->b += input[i + 4] + s->state + 11111;
           }
         }
       }
     } else {
       if (input_count == 3) {
-        s->a += s->state + (input[i] | (input[i + 1] << 8)
-          | (input[i + 2] << 16)) + 111;
+        s->a += (input[i] | (input[i + 1] << 8) | (input[i + 2] << 16))
+          + s->state + 111;
       } else {
         if (input_count == 2) {
-          s->a += s->state + (input[i] | (input[i + 1] << 8)) + 11;
+          s->a += (input[i] | (input[i + 1] << 8)) + s->state + 11;
         } else {
-          s->a += s->state + input[i] + 1;
+          s->a += input[i] + s->state + 1;
         }
       }
     }
