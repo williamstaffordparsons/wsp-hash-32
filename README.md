@@ -32,7 +32,7 @@ int main(void) {
     wsp_hash_32_transform(0, 8, (const uint8_t *) input, &s);
     wsp_hash_32_finalize(&s);
     input[7]++;
-    printf("Segmented result %u is 0x%08x.\n", i, s.state);
+    printf("Segmented result %u is 0x%08x.\n", i, s.mix);
   }
 
   return 0;
